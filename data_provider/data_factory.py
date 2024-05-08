@@ -9,6 +9,7 @@ def data_provider(args, flag):
     data = dataset_dict[args.data]
     shuffle = False if flag == "test" else True
     batch_size = args.batch_size
+    drop_last = True
 
     if args.task_name == "forecasting":
         dataset = data(
@@ -23,6 +24,5 @@ def data_provider(args, flag):
             scaler=args.scaler,
         )
         print(flag, len(data))
-        drop_last = True
         data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=args.num_workers, drop_last=drop_last)
         return dataset, data_loader
