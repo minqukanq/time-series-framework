@@ -93,23 +93,24 @@ if __name__ == "__main__":
     parser.add_argument("--factor", type=int, default=1, help="attn factor")
     parser.add_argument("--c_in", type=int, default=1, help="Input size")
     parser.add_argument("--c_out", type=int, default=1, help="output size")
-    parser.add_argument('--enc_in', type=int, default=1, help='encoder input size')
-    parser.add_argument('--dec_in', type=int, default=1, help='decoder input size')
+    parser.add_argument("--enc_in", type=int, default=1, help="encoder input size")
+    parser.add_argument("--dec_in", type=int, default=1, help="decoder input size")
     parser.add_argument("--d_ff", type=int, default=2048, help="dimension of fcn")
     parser.add_argument("--top_k", type=int, default=5, help="for TimesBlock")
-    parser.add_argument('--n_heads', type=int, default=8, help='num of heads')
+    parser.add_argument("--n_heads", type=int, default=8, help="num of heads")
+    parser.add_argument("--output_attention", action="store_true", help="whether to output attention in ecoder")
+    parser.add_argument("--activation", type=str, default="gelu", help="activation")
 
     # supplementary config for LSTNet model
-    parser.add_argument('--rnn_hidden', type=int, default=100, help='rnn hidden size')
-    parser.add_argument('--cnn_hidden', type=int, default=100, help='cnn hidden size')
-    parser.add_argument('--skip_hidden', type=int, default=5)
-    parser.add_argument('--skip', type=float, default=24)
-    parser.add_argument('--highway_window', type=int, default=24, help='The window size of the highway component')
+    parser.add_argument("--rnn_hidden", type=int, default=100, help="rnn hidden size")
+    parser.add_argument("--cnn_hidden", type=int, default=100, help="cnn hidden size")
+    parser.add_argument("--skip_hidden", type=int, default=5)
+    parser.add_argument("--skip", type=float, default=24)
+    parser.add_argument("--highway_window", type=int, default=24, help="The window size of the highway component")
 
     # supplementary config for SegRNN model
-    parser.add_argument('--seg_len', type=int, default=48,
-                        help='the length of segmen-wise iteration of SegRNN')
-    
+    parser.add_argument("--seg_len", type=int, default=48, help="the length of segmen-wise iteration of SegRNN")
+
     args = parser.parse_args()
 
     args.use_gpu = True if torch.cuda.is_available() else False
