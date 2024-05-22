@@ -93,8 +93,11 @@ if __name__ == "__main__":
     parser.add_argument("--factor", type=int, default=1, help="attn factor")
     parser.add_argument("--c_in", type=int, default=1, help="Input size")
     parser.add_argument("--c_out", type=int, default=1, help="output size")
+    parser.add_argument('--enc_in', type=int, default=1, help='encoder input size')
+    parser.add_argument('--dec_in', type=int, default=1, help='decoder input size')
     parser.add_argument("--d_ff", type=int, default=2048, help="dimension of fcn")
     parser.add_argument("--top_k", type=int, default=5, help="for TimesBlock")
+    parser.add_argument('--n_heads', type=int, default=8, help='num of heads')
 
     # supplementary config for LSTNet model
     parser.add_argument('--rnn_hidden', type=int, default=100, help='rnn hidden size')

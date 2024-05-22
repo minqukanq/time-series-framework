@@ -176,7 +176,7 @@ class MICN(nn.Module):
             isometric_kernel=isometric_kernel,
             device=configs.device,
         )
-        if self.task_name == "forecastingn":
+        if self.task_name == "forecasting":
             # refer to DLinear
             self.regression = nn.Linear(configs.seq_len, configs.pred_len)
             self.regression.weight = nn.Parameter(
