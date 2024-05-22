@@ -66,7 +66,7 @@ python run.py \
     --data_paths upbit/KRW-$market'_DAYS'.csv \
     --model $model_name \
     --id $market'_1d_pred'$pred_len'_1' \
-    --fre[q d \
+    --freq d \
     --scaler S \
     --seq_len 36 \
     --label_len 36 \
