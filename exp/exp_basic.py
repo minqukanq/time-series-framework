@@ -1,12 +1,33 @@
 import os
+
 import torch
+
+from models.d_linear import DLinear
+from models.i_transformer import ITransformer
+from models.lst_net import LSTNet
+from models.micn import MICN
+from models.patch_tst import PatchTST
+from models.seg_rnn import SegRNN
+from models.time_mixer import TimeMixer
+from models.times_net import TimesNet
 
 
 class ExpBasic:
     def __init__(self, args) -> None:
         self.args = args
-        self.model_dict = {}
+        self.model_dict = {
+            "TimeMixer": TimeMixer,
+            "DLinear": DLinear,
+            "TimesNet": TimesNet,
+            "MICN": MICN,
+            "ITransformer": ITransformer,
+            "PatchTST": PatchTST,
+            "SegRNN": SegRNN,
+            "LSTNet": LSTNet,
+        }
         self.device = self._acquire_device()
+        self.args.device = self.device
+        self.model = self._build_model().to(self.device)
 
     def _acquire_device(self):
         if self.args.use_gpu:

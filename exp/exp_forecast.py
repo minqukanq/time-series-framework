@@ -23,7 +23,7 @@ class ExpForecasting(ExpBasic):
 
         if args.use_wandb:
             wandb.init(
-                project=args.model,
+                project=f"paper_{args.model}",
                 group=args.des,
                 name=args.id,
                 notes=args.des,
@@ -175,9 +175,11 @@ class ExpForecasting(ExpBasic):
                 total_loss.append(loss)
         total_loss = np.average(total_loss)
         self.model.train()
+        return total_loss
 
     def test(self, setting, test=0):
         test_data, test_loader = self._get_data(flag="test")
+        print(test_data)
         if test:
             print("loading model")
             self.model.load_state_dict(torch.load(os.path.join("./checkpoints/" + setting, "checkpoint.pth")))
@@ -202,12 +204,12 @@ class ExpForecasting(ExpBasic):
                 outputs = self.model(batch_x, batch_x_mark, dec_input, batch_y_mark)
 
                 f_dim = -1 if self.args.features == "MS" else 0
-                outputs = outputs[:, -self.args.pred_len :, f_dim:]
-                batch_y = batch_y[:, -self.args.pred_len :, f_dim:].to(self.device)
+                outputs = outputs[:, -self.args.pred_len :, :]
+                batch_y = batch_y[:, -self.args.pred_len :, :].to(self.device)
                 outputs = outputs.detach().cpu().numpy()
                 batch_y = batch_y.detach().cpu().numpy()
 
-                if test_data.scale and self.args.inverse:
+                if self.args.inverse:
                     shape = outputs.shape
                     outputs = test_data.inverse_transform(outputs.squeeze(0)).reshape(shape)
                     batch_y = test_data.inverse_transform(batch_y.squeeze(0)).reshape(shape)
@@ -222,7 +224,7 @@ class ExpForecasting(ExpBasic):
                 trues.append(true)
                 if i % 20 == 0:
                     input = batch_x.detach().cpu().numpy()
-                    if test_data.scale and self.args.inverse:
+                    if self.args.inverse:
                         shape = input.shape
                         input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
                     gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)

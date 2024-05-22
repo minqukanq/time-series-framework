@@ -15,7 +15,7 @@ class CryptocurrencyDataset(Dataset):
         flag="train",
         features="S",
         data_path="KRW-BTC_HOUR.csv",
-        test_start_date="2022-04-01 00:00:00",
+        test_start_date="2023-05-16 00:00:00",
         target="close",
         scaler=None,
         freq="h",
@@ -45,8 +45,9 @@ class CryptocurrencyDataset(Dataset):
         self.__read_data__()
 
     def __read_data__(self):
+        print(self.root_path)
+        print(self.data_path)
         df_raw = pd.read_csv(os.path.join(self.root_path, self.data_path))
-
         """
         df_raw.columns: ['date', ...(other features), target feature]
         """

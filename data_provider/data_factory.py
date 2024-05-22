@@ -8,6 +8,7 @@ dataset_dict = {"CryptocurrencyDataset": CryptocurrencyDataset}
 def data_provider(args, flag):
     data = dataset_dict[args.data]
     shuffle = False if flag == "test" else True
+    # batch_size = 1 if flag == "test" else args.batch_size
     batch_size = args.batch_size
     drop_last = True
 
@@ -23,6 +24,6 @@ def data_provider(args, flag):
             freq=args.freq,
             scaler=args.scaler,
         )
-        print(flag, len(data))
+        print(flag, len(dataset))
         data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=args.num_workers, drop_last=drop_last)
         return dataset, data_loader
