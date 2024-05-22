@@ -1,4 +1,4 @@
-model_name=LSTNet
+model_name=SegRNN
 
 for market in BTC ETH XRP
 do
@@ -14,12 +14,9 @@ python run.py \
     --freq h \
     --scaler S \
     --pred_len $pred_len \
-    --dropout 0.2 \
-    --d_model 100 \
-    --rnn_hidden 100 \
-    --cnn_hidden 100 \
-    --skip_hidden 5 \
-    --num_kernels 6 \
+    --d_model 512 \
+    --seg_len 6 \
+    --dropout 0.5 \
     --des 'Paper '$market' Min 30' \
     --gpu 0
 done
@@ -35,12 +32,9 @@ python run.py \
     --freq h \
     --scaler S \
     --pred_len $pred_len \
-    --dropout 0.2 \
-    --d_model 100 \
-    --rnn_hidden 100 \
-    --cnn_hidden 100 \
-    --skip_hidden 5 \
-    --num_kernels 6 \
+    --d_model 512 \
+    --seg_len 6 \
+    --dropout 0.5 \
     --des 'Paper '$market' Hour 1' \
     --gpu 0
 done
@@ -56,12 +50,9 @@ python run.py \
     --freq h \
     --scaler S \
     --pred_len $pred_len \
-    --dropout 0.2 \
-    --d_model 100 \
-    --rnn_hidden 100 \
-    --cnn_hidden 100 \
-    --skip_hidden 5 \
-    --num_kernels 6 \
+    --d_model 512 \
+    --seg_len 6 \
+    --dropout 0.5 \
     --test_start_date '2023-05-16 01:00:00' \
     --des 'Paper '$market' Hour 4' \
     --gpu 0
@@ -80,12 +71,9 @@ python run.py \
     --seq_len 36 \
     --label_len 18 \
     --pred_len $pred_len \
-    --dropout 0.2 \
-    --d_model 100 \
-    --rnn_hidden 100 \
-    --cnn_hidden 100 \
-    --skip_hidden 5 \
-    --num_kernels 6 \
+    --d_model 512 \
+    --seg_len 3 \
+    --dropout 0.5 \
     --test_start_date '2023-05-16 09:00:00' \
     --des 'Paper '$market' Day' \
     --gpu 0

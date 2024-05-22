@@ -106,6 +106,10 @@ if __name__ == "__main__":
     parser.add_argument('--skip', type=float, default=24)
     parser.add_argument('--highway_window', type=int, default=24, help='The window size of the highway component')
 
+    # supplementary config for SegRNN model
+    parser.add_argument('--seg_len', type=int, default=48,
+                        help='the length of segmen-wise iteration of SegRNN')
+    
     args = parser.parse_args()
 
     args.use_gpu = True if torch.cuda.is_available() else False
