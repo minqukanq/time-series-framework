@@ -5,7 +5,6 @@ from pickle import dump
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from torch.utils.data import ConcatDataset
 
 
 def adjust_learning_rate(optimizer, epoch, args):
