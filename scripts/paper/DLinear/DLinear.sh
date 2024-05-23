@@ -1,7 +1,6 @@
-for market in BTC ETH XRP
-do
+model_name=DLinear
 
-for model_name in DLinear
+for market in BTC ETH XRP
 do
 
 for pred_len in 6 12 24 48 96
@@ -11,16 +10,12 @@ python run.py \
     --use_wandb \
     --data_paths upbit/KRW-$market'_MINUTES_30'.csv \
     --model $model_name \
-    --id $market'_30m_'$pred_len \
-    --data Market \
+    --id $market'_30m_pred'$pred_len'_1' \
     --freq h \
     --scaler S \
-    --seq_len 96 \
     --pred_len $pred_len \
-    --lr 1e-4 \
-    --loss 'MSE' \
-    --test_start_date '2022-04-01 09:00:00' \
-    --des 'DLinear '$market' Min 30'
+    --des 'Paper '$market' Min 30' \
+    --gpu 0
 done
 
 for pred_len in 6 12 24 48 96
@@ -30,16 +25,12 @@ python run.py \
     --use_wandb \
     --data_paths upbit/KRW-$market'_HOUR'.csv \
     --model $model_name \
-    --id $market'_1h_'$pred_len \
-    --data Market \
+    --id $market'_1h_pred'$pred_len'_1' \
     --freq h \
     --scaler S \
-    --seq_len 96 \
     --pred_len $pred_len \
-    --lr 1e-4 \
-    --loss 'MSE' \
-    --test_start_date '2022-04-01 09:00:00' \
-    --des 'DLinear '$market' Hour 1'
+    --des 'Paper '$market' Hour 1' \
+    --gpu 0
 done
 
 for pred_len in 6 12 24 48 96
@@ -49,16 +40,13 @@ python run.py \
     --use_wandb \
     --data_paths upbit/KRW-$market'_HOUR4'.csv \
     --model $model_name \
-    --id $market'_4h_'$pred_len \
-    --data Market \
+    --id $market'_4h_pred'$pred_len'_1' \
     --freq h \
     --scaler S \
-    --seq_len 96 \
     --pred_len $pred_len \
-    --lr 1e-4 \
-    --loss 'MSE' \
-    --test_start_date '2022-04-01 09:00:00' \
-    --des 'DLinear '$market' Hour 4'
+    --test_start_date '2023-05-16 01:00:00' \
+    --des 'Paper '$market' Hour 4' \
+    --gpu 0
 done
 
 for pred_len in 3 6 12 24 36
@@ -68,19 +56,15 @@ python run.py \
     --use_wandb \
     --data_paths upbit/KRW-$market'_DAYS'.csv \
     --model $model_name \
-    --id $market'_1d_'$pred_len \
-    --data Market \
-    --freq h \
+    --id $market'_1d_pred'$pred_len'_1' \
+    --freq d \
     --scaler S \
     --seq_len 36 \
     --label_len 18 \
     --pred_len $pred_len \
-    --lr 1e-4 \
-    --loss 'MSE' \
-    --test_start_date '2022-04-01 09:00:00' \
-    --des 'DLinear '$market' Day'
-done
-
+    --test_start_date '2023-05-16 09:00:00' \
+    --des 'Paper '$market' Day' \
+    --gpu 0
 done
 
 done

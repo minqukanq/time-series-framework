@@ -1,4 +1,4 @@
-model_name=ITransformer
+model_name=TimeMixer
 
 for market in BTC ETH XRP
 do
@@ -15,9 +15,11 @@ python run.py \
     --scaler S \
     --pred_len $pred_len \
     --e_layers 2 \
-    --factor 3 \
-    --d_model 256 \
-    --d_ff 256 \
+    --d_model 16 \
+    --d_ff 32 \
+    --down_sampling_layers 3 \
+    --down_sampling_window 2 \
+    --down_sampling_method avg \
     --des 'Paper '$market' Min 30' \
     --gpu 0
 done
@@ -34,9 +36,11 @@ python run.py \
     --scaler S \
     --pred_len $pred_len \
     --e_layers 2 \
-    --factor 3 \
-    --d_model 256 \
-    --d_ff 256 \
+    --d_model 16 \
+    --d_ff 32 \
+    --down_sampling_layers 3 \
+    --down_sampling_window 2 \
+    --down_sampling_method avg \
     --des 'Paper '$market' Hour 1' \
     --gpu 0
 done
@@ -53,9 +57,11 @@ python run.py \
     --scaler S \
     --pred_len $pred_len \
     --e_layers 2 \
-    --factor 3 \
-    --d_model 256 \
-    --d_ff 256 \
+    --d_model 16 \
+    --d_ff 32 \
+    --down_sampling_layers 3 \
+    --down_sampling_window 2 \
+    --down_sampling_method avg \
     --test_start_date '2023-05-16 01:00:00' \
     --des 'Paper '$market' Hour 4' \
     --gpu 0
@@ -75,9 +81,11 @@ python run.py \
     --label_len 18 \
     --pred_len $pred_len \
     --e_layers 2 \
-    --factor 3 \
-    --d_model 256 \
-    --d_ff 256 \
+    --d_model 16 \
+    --d_ff 32 \
+    --down_sampling_layers 3 \
+    --down_sampling_window 2 \
+    --down_sampling_method avg \
     --test_start_date '2023-05-16 09:00:00' \
     --des 'Paper '$market' Day' \
     --gpu 0
