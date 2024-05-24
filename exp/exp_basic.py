@@ -5,11 +5,15 @@ import torch
 from models.d_linear import DLinear
 from models.i_transformer import ITransformer
 from models.lst_net import LSTNet
+from models.lstm import LSTM
 from models.micn import MICN
+from models.mlp import MLP
 from models.patch_tst import PatchTST
 from models.seg_rnn import SegRNN
+from models.tcn import TCN
 from models.time_mixer import TimeMixer
 from models.times_net import TimesNet
+from models.transformer import Transformer
 
 
 class ExpBasic:
@@ -24,6 +28,10 @@ class ExpBasic:
             "PatchTST": PatchTST,
             "SegRNN": SegRNN,
             "LSTNet": LSTNet,
+            "Transformer": Transformer,
+            "LSTM": LSTM,
+            "MLP": MLP,
+            "TCN": TCN,
         }
         self.device = self._acquire_device()
         self.args.device = self.device

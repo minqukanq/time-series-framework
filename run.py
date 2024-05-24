@@ -104,7 +104,7 @@ if __name__ == "__main__":
                         help='method of series decompsition, only support moving_avg or dft_decomp')
     parser.add_argument('--use_norm', type=int, default=1, help='whether to use normalize; True 1 False 0')
 
-    # supplementary config for LSTNet model
+    # supplementary config for LSTNet, LSTM model
     parser.add_argument("--rnn_hidden", type=int, default=100, help="rnn hidden size")
     parser.add_argument("--cnn_hidden", type=int, default=100, help="cnn hidden size")
     parser.add_argument("--skip_hidden", type=int, default=5)
