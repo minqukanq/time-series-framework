@@ -1,4 +1,4 @@
-model_name=TimeMixer
+model_name=ModernTCN
 
 for market in BTC ETH XRP
 do
@@ -13,15 +13,19 @@ python run.py \
     --id $market'_30m_pred'$pred_len'_1' \
     --freq h \
     --scaler S \
+    --label_len 0 \
     --pred_len $pred_len \
-    --e_layers 2 \
-    --d_model 16 \
-    --d_ff 32 \
-    --down_sampling_layers 3 \
-    --down_sampling_window 2 \
-    --down_sampling_method avg \
+    --ffn_ratio 1 \
+    --patch_size 8 \
+    --patch_stride 4 \
+    --num_blocks 1 \
+    --large_size 51 \
+    --small_size 5 \
+    --dims 64 64 64 64 \
+    --head_dropout 0.0 \
+    --small_kernel_merged False \
     --des 'Paper '$market' Min 30' \
-    --gpu 0
+    --gpu 1
 done
 
 for pred_len in 6 12 24 48 96
@@ -34,15 +38,19 @@ python run.py \
     --id $market'_1h_pred'$pred_len'_1' \
     --freq h \
     --scaler S \
+    --label_len 0 \
     --pred_len $pred_len \
-    --e_layers 2 \
-    --d_model 16 \
-    --d_ff 32 \
-    --down_sampling_layers 3 \
-    --down_sampling_window 2 \
-    --down_sampling_method avg \
+    --ffn_ratio 1 \
+    --patch_size 8 \
+    --patch_stride 4 \
+    --num_blocks 1 \
+    --large_size 51 \
+    --small_size 5 \
+    --dims 64 64 64 64 \
+    --head_dropout 0.0 \
+    --small_kernel_merged False \
     --des 'Paper '$market' Hour 1' \
-    --gpu 0
+    --gpu 1
 done
 
 for pred_len in 6 12 24 48 96
@@ -55,16 +63,20 @@ python run.py \
     --id $market'_4h_pred'$pred_len'_1' \
     --freq h \
     --scaler S \
+    --label_len 0 \
     --pred_len $pred_len \
-    --e_layers 2 \
-    --d_model 16 \
-    --d_ff 32 \
-    --down_sampling_layers 3 \
-    --down_sampling_window 2 \
-    --down_sampling_method avg \
+    --ffn_ratio 1 \
+    --patch_size 8 \
+    --patch_stride 4 \
+    --num_blocks 1 \
+    --large_size 51 \
+    --small_size 5 \
+    --dims 64 64 64 64 \
+    --head_dropout 0.0 \
+    --small_kernel_merged False \
     --test_start_date '2023-05-16 01:00:00' \
     --des 'Paper '$market' Hour 4' \
-    --gpu 0
+    --gpu 1
 done
 
 for pred_len in 3 6 12 24 36
@@ -78,17 +90,20 @@ python run.py \
     --freq d \
     --scaler S \
     --seq_len 36 \
-    --label_len 18 \
+    --label_len 0 \
     --pred_len $pred_len \
-    --e_layers 2 \
-    --d_model 16 \
-    --d_ff 32 \
-    --down_sampling_layers 3 \
-    --down_sampling_window 1 \
-    --down_sampling_method avg \
+    --ffn_ratio 1 \
+    --patch_size 8 \
+    --patch_stride 4 \
+    --num_blocks 1 \
+    --large_size 51 \
+    --small_size 5 \
+    --dims 64 64 64 64 \
+    --head_dropout 0.0 \
+    --small_kernel_merged False \
     --test_start_date '2023-05-16 09:00:00' \
     --des 'Paper '$market' Day' \
-    --gpu 0
+    --gpu 1
 done
 
 
