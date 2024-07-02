@@ -12,7 +12,7 @@ from exp.exp_basic import ExpBasic
 from utils.losses import MAPELoss, SMAPELoss
 from utils.metrics import metric
 from utils.scheduler import CosineAnnealingWarmUpRestarts
-from utils.tools import EarlyStopping, load_model, visual
+from utils.tools import EarlyStopping, load_model, save_params_to_json, visual
 
 warnings.filterwarnings("ignore")
 
@@ -23,7 +23,7 @@ class ExpForecasting(ExpBasic):
 
         if args.use_wandb:
             wandb.init(
-                project=f"paper_{args.model}",
+                project=f"Qrade_{args.model}",
                 group=args.des,
                 name=args.id,
                 notes=args.des,
@@ -75,7 +75,7 @@ class ExpForecasting(ExpBasic):
         time_now = time.time()
 
         train_steps = len(train_loader)
-        early_stopping = EarlyStopping(patience=self.args.patience, verbose=True)
+        early_stopping = EarlyStopping(patience=self.args.patience, verbose=True, args=self.args)
 
         optimizer = self._select_optimizer()
         criterion = self._select_criterion(self.args.loss)
@@ -251,6 +251,12 @@ class ExpForecasting(ExpBasic):
         f.write("\n")
         f.write("\n")
         f.close()
+
+        performance = {
+            "performance": {"mae": mae.item(), "mse": mse.item(), "rmse": rmse.item(), "mape": mape.item(), "mspe": mspe.item()}
+        }
+        path = os.path.join(self.args.checkpoints, f"{setting}/params.json")
+        save_params_to_json(performance, path)
 
         if self.args.use_wandb:
             wandb.log(

@@ -5,6 +5,7 @@ import numpy as np
 import torch
 
 from exp.exp_forecast import ExpForecasting
+from utils.str2bool import str2bool
 from utils.tools import make_setting
 
 if __name__ == "__main__":
@@ -31,6 +32,8 @@ if __name__ == "__main__":
         default="hour4.csv",
         help="data file",
     )
+
+    parser.add_argument("--train_start_date", type=str, default="2017-09-25 09:00:00", help="train start date")
     parser.add_argument("--test_start_date", type=str, default="2023-05-16 00:00:00", help="test start date")
     parser.add_argument(
         "--scaler",
@@ -100,9 +103,10 @@ if __name__ == "__main__":
     parser.add_argument("--n_heads", type=int, default=8, help="num of heads")
     parser.add_argument("--output_attention", action="store_true", help="whether to output attention in ecoder")
     parser.add_argument("--activation", type=str, default="gelu", help="activation")
-    parser.add_argument('--decomp_method', type=str, default='moving_avg',
-                        help='method of series decompsition, only support moving_avg or dft_decomp')
-    parser.add_argument('--use_norm', type=int, default=1, help='whether to use normalize; True 1 False 0')
+    parser.add_argument(
+        "--decomp_method", type=str, default="moving_avg", help="method of series decompsition, only support moving_avg or dft_decomp"
+    )
+    parser.add_argument("--use_norm", type=int, default=1, help="whether to use normalize; True 1 False 0")
 
     # supplementary config for LSTNet, LSTM model
     parser.add_argument("--rnn_hidden", type=int, default=100, help="rnn hidden size")
@@ -115,12 +119,34 @@ if __name__ == "__main__":
     parser.add_argument("--seg_len", type=int, default=48, help="the length of segmen-wise iteration of SegRNN")
 
     # supplementary config for TimeMixer model
-    parser.add_argument('--channel_independence', type=int, default=1,
-                        help='0: channel dependence 1: channel independence for FreTS model')
-    parser.add_argument('--down_sampling_layers', type=int, default=0, help='num of down sampling layers')
-    parser.add_argument('--down_sampling_window', type=int, default=1, help='down sampling window size')
-    parser.add_argument('--down_sampling_method', type=str, default=None,
-                        help='down sampling method, only support avg, max, conv')
+    parser.add_argument(
+        "--channel_independence", type=int, default=1, help="0: channel dependence 1: channel independence for FreTS model"
+    )
+    parser.add_argument("--down_sampling_layers", type=int, default=0, help="num of down sampling layers")
+    parser.add_argument("--down_sampling_window", type=int, default=1, help="down sampling window size")
+    parser.add_argument("--down_sampling_method", type=str, default=None, help="down sampling method, only support avg, max, conv")
+
+    # supplementary config for ModernTCN model
+    parser.add_argument("--stem_ratio", type=int, default=6, help="stem ratio")
+    parser.add_argument("--downsample_ratio", type=int, default=2, help="downsample_ratio")
+    parser.add_argument("--ffn_ratio", type=int, default=2, help="ffn_ratio")
+    parser.add_argument("--patch_size", type=int, default=16, help="the patch size")
+    parser.add_argument("--patch_stride", type=int, default=8, help="the patch stride")
+    parser.add_argument("--head_dropout", type=float, default=0.0, help="head dropout")
+    parser.add_argument("--num_blocks", nargs="+", type=int, default=[1, 1, 1, 1], help="num_blocks in each stage")
+    parser.add_argument("--large_size", nargs="+", type=int, default=[31, 29, 27, 13], help="big kernel size")
+    parser.add_argument("--small_size", nargs="+", type=int, default=[5, 5, 5, 5], help="small kernel size for structral reparam")
+    parser.add_argument("--dims", nargs="+", type=int, default=[256, 256, 256, 256], help="dmodels in each stage")
+    parser.add_argument("--dw_dims", nargs="+", type=int, default=[256, 256, 256, 256])
+    parser.add_argument("--revin", type=int, default=1, help="RevIN; True 1 False 0")
+    parser.add_argument("--small_kernel_merged", type=str2bool, default=False, help="small_kernel has already merged or not")
+    parser.add_argument("--call_structural_reparam", type=bool, default=False, help="structural_reparam after training")
+    parser.add_argument("--use_multi_scale", type=str2bool, default=True, help="use_multi_scale fusion")
+    parser.add_argument("--affine", type=int, default=0, help="RevIN-affine; True 1 False 0")
+    parser.add_argument("--subtract_last", type=int, default=0, help="0: subtract mean; 1: subtract last")
+    parser.add_argument("--decomposition", type=int, default=0, help="decomposition; True 1 False 0")
+    parser.add_argument("--individual", type=int, default=0, help="individual head; True 1 False 0")
+    parser.add_argument("--kernel_size", type=int, default=25, help="decomposition-kernel")
 
     args = parser.parse_args()
 
@@ -139,8 +165,8 @@ if __name__ == "__main__":
     if args.task_name == "forecasting":
         Exp = ExpForecasting
 
-    setting_dict, setting_str = make_setting()
-    args.setting = setting_dict
+    input_setting_dict, setting_str = make_setting()
+    args.setting = input_setting_dict
 
     if args.is_training:
         for itr in range(args.itr):

@@ -15,6 +15,7 @@ class CryptocurrencyDataset(Dataset):
         flag="train",
         features="S",
         data_path="KRW-BTC_HOUR.csv",
+        train_start_date="2017-09-25 09:00:00",
         test_start_date="2023-05-16 00:00:00",
         target="close",
         scaler=None,
@@ -34,6 +35,7 @@ class CryptocurrencyDataset(Dataset):
 
         self.root_path = root_path
         self.data_path = data_path
+        self.train_start_date = train_start_date
         self.test_start_date = test_start_date
 
         self.scaler = scaler
@@ -55,6 +57,8 @@ class CryptocurrencyDataset(Dataset):
         cols.remove(self.target)
         cols.remove("datetime")
         df_raw = df_raw[["datetime"] + cols + [self.target]]
+
+        df_raw = df_raw[df_raw["datetime"] >= self.train_start_date].reset_index(drop=True)
 
         target_index = df_raw.loc[df_raw["datetime"] == self.test_start_date].index[0]
         num_test = len(df_raw[target_index:])

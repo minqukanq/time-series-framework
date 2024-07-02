@@ -8,6 +8,7 @@ from models.lst_net import LSTNet
 from models.lstm import LSTM
 from models.micn import MICN
 from models.mlp import MLP
+from models.modern_tcn import ModernTCN
 from models.patch_tst import PatchTST
 from models.seg_rnn import SegRNN
 from models.tcn import TCN
@@ -32,6 +33,7 @@ class ExpBasic:
             "LSTM": LSTM,
             "MLP": MLP,
             "TCN": TCN,
+            "ModernTCN": ModernTCN,
         }
         self.device = self._acquire_device()
         self.args.device = self.device

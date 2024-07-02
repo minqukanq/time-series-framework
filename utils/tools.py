@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 from pickle import dump
@@ -21,7 +22,8 @@ def adjust_learning_rate(optimizer, epoch, args):
 
 
 class EarlyStopping:
-    def __init__(self, patience=7, verbose=False, delta=0):
+    def __init__(self, patience=7, verbose=False, delta=0, args=None):
+        self.args = args
         self.patience = patience
         self.verbose = verbose
         self.counter = 0
@@ -34,9 +36,12 @@ class EarlyStopping:
         score = -val_loss
         if self.best_score is None:
             self.best_score = score
+
             self.save_checkpoint(val_loss, model, path)
             scaler = dataset.scaler
             dump(scaler, open(f"{path}/scaler.pkl", "wb"))
+            if self.args is not None:
+                save_params_to_json(self.args.setting, f"{path}/params.json")
 
         elif score < self.best_score + self.delta:
             self.counter += 1
@@ -80,14 +85,27 @@ def visual(true, preds=None, name="./pic/test.pdf"):
 
 def make_setting():
     commands = sys.argv[1:]
-    setting_dict = {}
+    input_setting_dict = {}
     for i in range(len(commands) - 1):
-        if commands[i] == "--is_training" or commands[i] == "--use_wandb" or commands[i] == "--data_paths":
+        if commands[i] == "--is_training" or commands[i] == "--use_wandb":
             continue
         if commands[i].startswith("--") and (commands[i + 1].startswith("--") is False):
             if "." in commands[i + 1] or " " in commands[i + 1] or os.sep in commands[i + 1]:
                 commands[i + 1] = commands[i + 1].replace(" ", "_").replace(".", "_").replace(os.sep, "_")
-            setting_dict[commands[i].replace("--", "")] = commands[i + 1]
-    setting_str = [f"{key[:3]}_{value}" for key, value in setting_dict.items()]
+            input_setting_dict[commands[i].replace("--", "")] = commands[i + 1]
+    setting_str = [f"{key[:3]}_{value}" for key, value in input_setting_dict.items()]
     setting_str = "__".join(setting_str)
-    return setting_dict, setting_str
+    return input_setting_dict, setting_str
+
+
+def save_params_to_json(params, output_path):
+    if os.path.exists(output_path):
+        with open(output_path, "r") as json_file:
+            existing_params = json.load(json_file)
+    else:
+        existing_params = {}
+
+    existing_params.update(params)
+
+    with open(output_path, "w") as json_file:
+        json.dump(existing_params, json_file, indent=4)

@@ -19,6 +19,7 @@ def data_provider(args, flag):
             flag=flag,
             size=[args.seq_len, args.pred_len, args.label_len],
             features=args.features,
+            train_start_date=args.train_start_date,
             test_start_date=args.test_start_date,
             target=args.target,
             freq=args.freq,
