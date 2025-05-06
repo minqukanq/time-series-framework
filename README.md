@@ -1,1 +1,2 @@
-### Deep Learning Framework for Time Series Tasks
+# Harnessing technical indicators with deep learning based price forecasting for cryptocurrency trading.
+Physica A: Statistical Mechanics and its Applications
